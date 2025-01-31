@@ -18,7 +18,7 @@ left_col, right_col = st.columns(2)
 with left_col:
     st.header("Input Features")
     
-    # Create input fields for each feature
+    # Create input fields for each feature with toggles
     state_mapping = {
         'Alabama': 0, 'Alaska': 1, 'Arizona': 2, 'Arkansas': 3, 'California': 4,
         'Colorado': 5, 'Connecticut': 6, 'Delaware': 7, 'Florida': 8, 'Georgia': 9,
@@ -35,21 +35,21 @@ with left_col:
     state_name = st.selectbox('State', list(state_mapping.keys()))
     state = state_mapping[state_name]
     area_code = st.number_input('Area Code', min_value=400, max_value=999, step=1)
-    voice_plan = st.selectbox('Voice Plan', ['No', 'Yes'])
-    intl_plan = st.selectbox('International Plan', ['No', 'Yes'])
+    voice_plan = st.radio('Voice Plan', ['No', 'Yes'])
+    intl_plan = st.radio('International Plan', ['No', 'Yes'])
 
     # Map Yes/No to 0/1
     voice_plan = 1 if voice_plan == 'Yes' else 0
     intl_plan = 1 if intl_plan == 'Yes' else 0
 
-    no_voice_messages = st.number_input('Voice Messages', min_value=0, max_value=100, step=1)
-    intl_mins = st.number_input('International Minutes', min_value=0.0, step=0.1)
-    no_of_international_calls = st.number_input('International Calls', min_value=0, max_value=100, step=1)
-    intl_charge = st.number_input('International Charge', min_value=0.0, step=0.1)
-    customer_calls = st.number_input('Customer Service Calls', min_value=0, max_value=10, step=1)
-    total_mins = st.number_input('Total Minutes', min_value=0.0, max_value=1000.0, step=1.0)
-    total_calls = st.number_input('Total Calls', min_value=0, max_value=500, step=1)
-    total_charge = st.number_input('Total Charge', min_value=0.0, step=1.0)
+    no_voice_messages = st.slider('Voice Messages', min_value=0, max_value=100, step=1)
+    intl_mins = st.slider('International Minutes', min_value=0.0, max_value=300.0, step=0.1)
+    no_of_international_calls = st.slider('International Calls', min_value=0, max_value=100, step=1)
+    intl_charge = st.slider('International Charge', min_value=0.0, max_value=50.0, step=0.1)
+    customer_calls = st.slider('Customer Service Calls', min_value=0, max_value=10, step=1)
+    total_mins = st.slider('Total Minutes', min_value=0.0, max_value=1000.0, step=1.0)
+    total_calls = st.slider('Total Calls', min_value=0, max_value=500, step=1)
+    total_charge = st.slider('Total Charge', min_value=0.0, max_value=500.0, step=1.0)
 
     # Collect the features into a list
     features = [state, area_code, voice_plan, no_voice_messages, intl_plan, intl_mins, no_of_international_calls, intl_charge, customer_calls, total_mins, total_calls, total_charge]
