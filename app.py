@@ -49,4 +49,16 @@ features = [state, area_code, voice_plan, no_voice_messages, intl_plan, intl_min
 # Predict button
 if st.button('Predict'):
     result = predict(features)
-    st.write(f'Prediction: {"Churn custumer will quit the company" if result == 1 else "No Churn custumer will not quit the company"}')
+    st.write(f'Prediction: {"Churn customer will quit the company" if result == 1 else "No Churn customer will not quit the company"}')
+
+    # Display prediction result as a pie chart
+    labels = ['Churn', 'No Churn']
+    sizes = [result, 1 - result]
+    colors = ['red', 'green']
+    explode = (0.1, 0)  # explode the churn slice
+
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    st.pyplot(fig1)
