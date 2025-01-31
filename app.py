@@ -12,8 +12,8 @@ def predict_proba(features):
 
 st.title('Customer Churn Prediction')
 
-# Layout: three columns
-left_col, middle_col, right_col = st.columns([2, 3, 1])
+# Layout: two columns for input and results
+left_col, middle_col = st.columns([1, 2])
 
 with left_col:
     st.header("Input Features")
@@ -64,7 +64,7 @@ if st.button('Predict'):
         st.write(f'Probability of Churn: {probabilities[1]*100:.2f}%')
         st.write(f'Probability of No Churn: {probabilities[0]*100:.2f}%')
 
-        # Display prediction result as a pie chart with some Yes and No in the result
+        # Display prediction result as a pie chart
         labels = ['Churn', 'No Churn']
         sizes = [probabilities[1], probabilities[0]]
         colors = ['red', 'green']
@@ -75,30 +75,25 @@ if st.button('Predict'):
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
         st.pyplot(fig1)
 
-        # Detailed Analysis: Most deciding factors
-        st.header("Detailed Analysis")
+        # Detailed analysis and deciding factors
+        st.header("Deciding Factors for Churn")
         st.write(f'You selected: State - {state_name}, Area Code - {area_code}, Voice Plan - {"Yes" if voice_plan else "No"}, International Plan - {"Yes" if intl_plan else "No"}')
 
-        # Factors affecting churn comparison
-        st.subheader("Factors Affecting Churn")
-        factors = ['International Plan', 'Voice Plan', 'Total Calls', 'Customer Service Calls', 'Total Charge']
-        values = [intl_plan, voice_plan, total_calls, customer_calls, total_charge]
-        mean_values = [0.6, 0.4, 300, 3, 200]  # Example mean values for the sake of comparison
-
+        factors = ['Customer Service Calls', 'Total Charge', 'International Charge', 'International Minutes', 'Total Calls']
+        values = [customer_calls, total_charge, intl_charge, intl_mins, total_calls]
+        
         fig2, ax2 = plt.subplots()
-        bar_width = 0.35
-        index = np.arange(len(factors))
-
-        bar1 = ax2.bar(index, values, bar_width, label='Customer')
-        bar2 = ax2.bar(index + bar_width, mean_values, bar_width, label='Average')
-
-        ax2.set_xlabel('Factors')
-        ax2.set_ylabel('Values')
-        ax2.set_title('Factors Comparison')
-        ax2.set_xticks(index + bar_width / 2)
-        ax2.set_xticklabels(factors)
-        ax2.legend()
-
+        ax2.barh(factors, values, color='blue')
+        ax2.set_title('Deciding Factors for Churn')
+        ax2.set_xlabel('Value')
         st.pyplot(fig2)
 
-        st.write("The above comparison shows that higher customer service calls, total charge, and international charges are key factors indicating a higher chance
+        # Explanation of results
+        st.header("Explanation")
+        st.write("""
+        Based on the input features, here are some key insights:
+        - Higher number of customer service calls can indicate dissatisfaction, leading to a higher chance of churn.
+        - High total charges and international charges can impact the customer's decision to stay.
+        - Frequent international calls and high total minutes may also contribute to the likelihood of churn.
+        """)
+
