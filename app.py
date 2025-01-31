@@ -1,7 +1,7 @@
 import streamlit as st
 import joblib
 import numpy as np
-
+import matplotlib.pyplot as plt
 # Load the trained model
 model = joblib.load('best_churn_model1.pkl')
 
