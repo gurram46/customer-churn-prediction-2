@@ -12,8 +12,8 @@ def predict_proba(features):
 
 st.title('Customer Churn Prediction')
 
-# Layout: two columns
-left_col, right_col = st.columns(2)
+# Layout: three columns
+left_col, middle_col, right_col = st.columns([2, 3, 1])
 
 with left_col:
     st.header("Input Features")
@@ -58,13 +58,13 @@ if st.button('Predict'):
     probabilities = predict_proba(features)
     result = "Churn customer will quit the company" if probabilities[1] > 0.5 else "No Churn customer will not quit the company"
 
-    with right_col:
+    with middle_col:
         st.header("Prediction Results")
         st.write(f'Prediction: {result}')
         st.write(f'Probability of Churn: {probabilities[1]*100:.2f}%')
         st.write(f'Probability of No Churn: {probabilities[0]*100:.2f}%')
 
-        # Display prediction result as a pie chart
+        # Display prediction result as a pie chart with some Yes and No in the result
         labels = ['Churn', 'No Churn']
         sizes = [probabilities[1], probabilities[0]]
         colors = ['red', 'green']
@@ -75,26 +75,30 @@ if st.button('Predict'):
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
         st.pyplot(fig1)
 
-        # Additional analysis and graphs
+        # Detailed Analysis: Most deciding factors
         st.header("Detailed Analysis")
         st.write(f'You selected: State - {state_name}, Area Code - {area_code}, Voice Plan - {"Yes" if voice_plan else "No"}, International Plan - {"Yes" if intl_plan else "No"}')
-        
-        # Example graph: Distribution of Churn by State
-        churn_data = pd.DataFrame({
-            'State': list(state_mapping.keys()),
-            'Churn_Rate': np.random.random(50)  # Random churn rate for illustration
-        })
+
+        # Factors affecting churn comparison
+        st.subheader("Factors Affecting Churn")
+        factors = ['International Plan', 'Voice Plan', 'Total Calls', 'Customer Service Calls', 'Total Charge']
+        values = [intl_plan, voice_plan, total_calls, customer_calls, total_charge]
+        mean_values = [0.6, 0.4, 300, 3, 200]  # Example mean values for the sake of comparison
+
         fig2, ax2 = plt.subplots()
-        churn_data.set_index('State').loc[[state_name]].plot(kind='bar', ax=ax2, color='red')
-        ax2.set_title('Churn Rate by State')
-        ax2.set_ylabel('Churn Rate')
+        bar_width = 0.35
+        index = np.arange(len(factors))
+
+        bar1 = ax2.bar(index, values, bar_width, label='Customer')
+        bar2 = ax2.bar(index + bar_width, mean_values, bar_width, label='Average')
+
+        ax2.set_xlabel('Factors')
+        ax2.set_ylabel('Values')
+        ax2.set_title('Factors Comparison')
+        ax2.set_xticks(index + bar_width / 2)
+        ax2.set_xticklabels(factors)
+        ax2.legend()
+
         st.pyplot(fig2)
 
-        # Example graph: Factors affecting churn
-        factors = ['International Plan', 'Voice Plan', 'Total Calls', 'Customer Service Calls']
-        importance = [0.3, 0.2, 0.25, 0.25]  # Example importance values
-        fig3, ax3 = plt.subplots()
-        ax3.barh(factors, importance, color='blue')
-        ax3.set_title('Factors Affecting Churn')
-        ax3.set_xlabel('Importance')
-        st.pyplot(fig3)
+        st.write("The above comparison shows that higher customer service calls, total charge, and international charges are key factors indicating a higher chance
