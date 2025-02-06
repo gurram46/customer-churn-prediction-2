@@ -6,10 +6,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the trained model
-data = pd.read_csv(r"data/data (1).csv")
+data = pd.read_csv(r"data (1).csv")
 
-# Load the dataset
-data = pd.read_csv(r"data(1).csv")  # Replace with your dataset path
+
 
 def predict(features):
     return model.predict([features])[0]
