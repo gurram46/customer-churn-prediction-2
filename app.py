@@ -9,7 +9,7 @@ import seaborn as sns
 model = joblib.load('best_churn_model1.pkl')
 
 # Load the dataset
-data = pd.read_csv(r"C:\Users\sande\customer-churn-prediction-2\data (1).csv")  # Replace with your dataset path
+data = pd.read_csv(r"data (1).csv")  # Replace with your dataset path
 
 def predict(features):
     return model.predict([features])[0]
