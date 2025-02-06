@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the trained model
-model = joblib.load('best_churn_model1.pkl')
+data = pd.read_csv(r"data/data (1).csv"
 
 # Load the dataset
 data = pd.read_csv(r"data(1).csv")  # Replace with your dataset path
