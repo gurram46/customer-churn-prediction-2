@@ -10,6 +10,9 @@ data = pd.read_csv(r"data (1).csv")
 
 
 
+model = joblib.load('best_churn_model1.pkl')  # Example filename
+
+
 def predict(features):
     return model.predict([features])[0]
 
